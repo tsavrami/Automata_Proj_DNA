@@ -1,0 +1,10 @@
+"Housekeeping"
+(1) Make this into a prettier version on Google Docs
+(2) Get everyone added to the GitHub repo
+(3) Make sure everyone's IDEs get along if necessary
+
+Non-coding
+(1 or 2) Make an automata dfa/nfa of DNA parsing
+(2 or 1) Regular expression of ^ (so it's easier to program)
+(3) Program the thing
+(*) Many steps to be added, these are just huge milestones.
