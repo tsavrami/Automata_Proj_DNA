@@ -62,9 +62,18 @@ public class dna_file {
 		System.out.println("===================================");
 		//calls on valid method to check and see if it is a DNA sequence or a protein Sequence or neither
 		valid(title, DNA_array);
+		System.out.println("Choose which sequence you to check the motif for:\n[I.E. type 1 for the first sequence, 2 for the second, etc.]");
+		int choice = input.nextInt();
+		String cTitle = title.get(choice);
+		String cSeq = DNA_array.get(choice);
+		System.out.println("Type in the motif");
+		String motif = input.next();
+		
+		
 
 	}
 	public static void valid(ArrayList<String> title, ArrayList<String> DNA_array) {
+		int display = 0;
 		//goes through the list to check to see if protein or DNA or neither
 		for(int i = 0; i < title.size(); i++) {
 			//current title
@@ -76,7 +85,7 @@ public class dna_file {
 			//using regex to check and see if its a protein
 			boolean maybeProtein = cSeq.matches("[ACDEFGHIKLMNPQRSTVWY]+");
 			//prints out current title
-			System.out.println(cTitle);
+			System.out.println("[" + display + "] " + cTitle);
 			//says which of the following it is
 			if(maybeDNA == true) {
 				System.out.println("Letter sequence is DNA");
@@ -88,6 +97,7 @@ public class dna_file {
 			//prints out the DNA sequence
 			System.out.println(cSeq);
 			System.out.println();
+			display++;
 		}
 	}
 
