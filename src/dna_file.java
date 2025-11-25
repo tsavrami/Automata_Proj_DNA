@@ -63,7 +63,7 @@ public class dna_file {
 		System.out.println("===================================");
 		//calls on valid method to check and see if it is a DNA sequence or a protein Sequence or neither
 		valid(title, DNA_array);
-		System.out.println("Choose which sequence you to check the motif for:\n[I.E. type 1 for the first sequence, 2 for the second, etc.]");
+		System.out.println("Choose which sequence you to check the motif for:\n[I.E. type 0 for the first sequence, 1 for the second, etc.]");
 		int choice = input.nextInt();
 		String cTitle = title.get(choice);
 		String cSeq = DNA_array.get(choice);
