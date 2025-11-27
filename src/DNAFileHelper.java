@@ -4,11 +4,25 @@ package src;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
 
-public class dna_file {
+public class DNAFileHelper extends Thread implements Runnable {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	// Variables
+	int choice; // which sequence detected by the program do you want to check, 0 for first, 1 for second, etc.
+	String cTitle;
+	String cSeq;
+	String motif;
+	ArrayList<String> validSeqs;
+	BlockingQueue<ArrayList<String>> blockingQueue;
+
+	DNAFileHelper(BlockingQueue<ArrayList<String>> bq) {
+		this.blockingQueue = bq;
+	}
+
+	@Override
+	public void run() {
+		
 		Scanner input = new Scanner(System.in);
 		int loop = 0;
 		//creates an array list for our titles and DNA sequences
@@ -64,18 +78,28 @@ public class dna_file {
 		}
 		System.out.println("===================================");
 		//calls on valid method to check and see if it is a DNA sequence or a protein Sequence or neither
-		valid(title, DNA_array);
-		System.out.println("Choose which sequence you to check the motif for:\n[I.E. type 0 for the first sequence, 1 for the second, etc.]");
-		int choice = input.nextInt();
-		String cTitle = title.get(choice);
-		String cSeq = DNA_array.get(choice);
-		System.out.println("Type in the motif");
-		String motif = input.next();
 		
-		
+		 // TROY: passes back the valid sequences
+		validSeqs = new ArrayList<>(valid(title, DNA_array));
+		// TROY: puts the valid sequences into the blocking queue
+		try { blockingQueue.put(validSeqs); } catch (InterruptedException e) { e.printStackTrace(); }
 
+		// TROY: deprecated, I'm moving this to a Helper class in the main
+		/*
+		System.out.println("Choose which sequence you to check the motif for:\n[I.E. type 0 for the first sequence, 1 for the second, etc.]");
+		choice = input.nextInt();
+		cTitle = title.get(choice);
+		cSeq = DNA_array.get(choice);
+		System.out.println("Type in the motif");
+		motif = input.next();
+		*/
 	}
-	public static void valid(ArrayList<String> title, ArrayList<String> DNA_array) {
+
+	private static ArrayList<String> valid(ArrayList<String> title, ArrayList<String> DNA_array) {
+
+		// Array list of cSeqs to pass back to the rest of the program
+		ArrayList<String> validSeqs = new ArrayList<String>();
+
 		int display = 0;
 		//goes through the list to check to see if protein or DNA or neither
 		for(int i = 0; i < title.size(); i++) {
@@ -101,7 +125,20 @@ public class dna_file {
 			System.out.println(cSeq);
 			System.out.println();
 			display++;
+
+			// Adds the cSeq to the array
+			validSeqs.add(cSeq);
 		}
+
+		return validSeqs;
+	}
+
+	// Quick way to verify DNA/protein for internal stuff
+	public static int isDNAProtien(String seq) {
+		if (seq.isEmpty()) return -1; // Simpler than doing a try/catch
+		else if (seq.matches("[ACGT]+")) return 0;
+		else if (seq.matches("[ACDEFGHIKLMNPQRSTVWY]+")) return 1;
+		else return -1;
 	}
 
 }
