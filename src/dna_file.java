@@ -1,3 +1,5 @@
+// (troy) TODO: amek this into a runnable thready class, make a driver class
+
 package src;
 
 import java.io.*;
