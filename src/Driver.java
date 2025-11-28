@@ -9,10 +9,10 @@ public class Driver {
 public static void main(String[] args) {
 
     // Variables and data structures
-    ArrayList<String> validSeqs = new ArrayList<>();
+    ArrayList<ArrayList<String>> validSeqs = new ArrayList<>();
 
     // (1.1) Create helpers, threads, etc. for reading input file
-    BlockingQueue<ArrayList<String>> blockingQueue = new LinkedBlockingDeque<>(2); // Concurrent queue for threads, size 2 might be too small I was guessing
+    BlockingQueue<ArrayList<ArrayList<String>>> blockingQueue = new LinkedBlockingDeque<>(2); // Concurrent queue for threads, size 2 might be too small I was guessing
     DNAFileHelper fileHelper = new DNAFileHelper(blockingQueue); // This is a thread!
 
     // (1.2) Start and wait for the DNA file-reader thread

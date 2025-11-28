@@ -13,15 +13,18 @@ public class DNAFileHelper extends Thread implements Runnable {
 	String cTitle;
 	String cSeq;
 	String motif;
-	ArrayList<String> validSeqs;
-	BlockingQueue<ArrayList<String>> blockingQueue;
+	ArrayList<ArrayList<String>> validSeqs;
+	BlockingQueue<ArrayList<ArrayList<String>>> blockingQueue; // Java is stupid and doesnt have tuples, so instead using an arraylist of arraylists (innermost ArrayList will have [title, sequence])
 
-	DNAFileHelper(BlockingQueue<ArrayList<String>> bq) {
+	DNAFileHelper(BlockingQueue<ArrayList<ArrayList<String>>> bq) {
 		this.blockingQueue = bq;
 	}
 
 	@Override
 	public void run() {
+
+		// TROY: initialize validSeqs
+		
 		
 		Scanner input = new Scanner(System.in);
 		int loop = 0;
@@ -95,10 +98,10 @@ public class DNAFileHelper extends Thread implements Runnable {
 		*/
 	}
 
-	private static ArrayList<String> valid(ArrayList<String> title, ArrayList<String> DNA_array) {
+	private static ArrayList<ArrayList<String>> valid(ArrayList<String> title, ArrayList<String> DNA_array) {
 
-		// Array list of cSeqs to pass back to the rest of the program
-		ArrayList<String> validSeqs = new ArrayList<String>();
+		// TROY: my fake tuple to return the rest of the application
+		ArrayList<ArrayList<String>> validTitleSeqs = new ArrayList<>();
 
 		int display = 0;
 		//goes through the list to check to see if protein or DNA or neither
@@ -126,11 +129,13 @@ public class DNAFileHelper extends Thread implements Runnable {
 			System.out.println();
 			display++;
 
-			// Adds the cSeq to the array
-			validSeqs.add(cSeq);
+			// TROY: adds the title and cSeq to the tuple arraylist
+			ArrayList<String> pair = new ArrayList<String>();
+			pair.add(cTitle);
+			pair.add(cSeq);
+			validTitleSeqs.add(pair);
 		}
-
-		return validSeqs;
+		return validTitleSeqs;
 	}
 
 	// Quick way to verify DNA/protein for internal stuff
