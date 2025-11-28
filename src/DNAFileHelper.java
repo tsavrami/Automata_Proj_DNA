@@ -138,7 +138,7 @@ public class DNAFileHelper extends Thread implements Runnable {
 	}
 
 	// Quick way to verify DNA/protein for internal stuff
-	public static int isDNAProtien(String seq) {
+	public static int isDNAOrProtien(String seq) {
 		if (seq.isEmpty()) return -1; // Simpler than doing a try/catch
 		else if (seq.matches("[ACGT]+")) return 0;
 		else if (seq.matches("[ACDEFGHIKLMNPQRSTVWY]+")) return 1;
