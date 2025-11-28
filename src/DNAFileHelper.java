@@ -15,18 +15,16 @@ public class DNAFileHelper extends Thread implements Runnable {
 	String motif;
 	ArrayList<ArrayList<String>> validSeqs;
 	BlockingQueue<ArrayList<ArrayList<String>>> blockingQueue; // Java is stupid and doesnt have tuples, so instead using an arraylist of arraylists (innermost ArrayList will have [title, sequence])
+	Scanner input;
 
-	DNAFileHelper(BlockingQueue<ArrayList<ArrayList<String>>> bq) {
+	DNAFileHelper(BlockingQueue<ArrayList<ArrayList<String>>> bq, Scanner scnr) {
 		this.blockingQueue = bq;
+		this.input = scnr;
 	}
 
 	@Override
 	public void run() {
-
-		// TROY: initialize validSeqs
 		
-		
-		Scanner input = new Scanner(System.in);
 		int loop = 0;
 		//creates an array list for our titles and DNA sequences
 		ArrayList<String> title = new ArrayList<String>();
@@ -35,8 +33,9 @@ public class DNAFileHelper extends Thread implements Runnable {
 		while(loop == 0) {
 			String fasta = "";
 			//ask user for file to open
-			System.out.println("Type the input file: ");
+			System.out.print(">>> Type the input file: ");
 			String fname1 = input.next();
+			input.nextLine(); // clear the newline from the buffer
 			//reads the file for the DNA sequence
 			try {
 				File iFile = new File(fname1);
@@ -79,7 +78,7 @@ public class DNAFileHelper extends Thread implements Runnable {
 				System.out.println("(Example: file1.txt)");
 			}
 		}
-		System.out.println("===================================");
+		System.out.println("\n===================================\n");
 		//calls on valid method to check and see if it is a DNA sequence or a protein Sequence or neither
 		
 		 // TROY: passes back the valid sequences
