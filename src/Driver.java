@@ -1,6 +1,7 @@
 package src;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -50,10 +51,13 @@ public class Driver {
             System.out.println("Title: " + title);
             System.out.println("Sequence: " + sequence);
 
-            // (3.1) Ask the user for a motif to search for
+            // (3.1) Ask the user for a motif(s) to search for
             int sequenceTypeCode = DNAFileHelper.isDNAOrProtien(sequence);
             System.out.print("\n>>> Enter the motif to search for: ");
-            while(true){ // outer loop for multiple motifs
+
+            //ANDREW: added exit condition for this while loop
+            boolean whileCondition = true;
+            while(whileCondition){ // outer loop for multiple motifs
                 while(flag){ // inner loop for data validation
                     motif = scnr.nextLine();
                     int motifTypeCode = DNAFileHelper.isDNAOrProtien(motif); // -1 is invalid, 0 is Dna, 1 is Protein
@@ -72,7 +76,7 @@ public class Driver {
                 System.out.println("Entered motifs so far: " + motifArrayList);
 
                 // (3.3) Ask user if they want to add another motif
-                System.out.print("\n>>> Do you want to add another motif? (y/n): ");
+                System.out.print("\n\n>>> Do you want to add another motif? (y/n): ");
                 while(flag){
                     String yn = scnr.nextLine();
                     if(yn.equalsIgnoreCase("y")){
@@ -81,12 +85,43 @@ public class Driver {
                     }
                     else if(yn.equalsIgnoreCase("n")){
                         flag = false; // exit inner loop
+                        whileCondition = false;
                         break; // !!! This breaks the outer while(true) loop
                     }
                     else System.out.print("\n>>> Invalid input. Do you want to add another motif? (y/n): ");
                 }
+
                 flag = true;
+                
+            }
+            System.out.println("\n\n===========================================================================================");
+            
+            System.out.println("Report: ");
+            for(int i = 0; i< motifArrayList.size(); i++){
+                List<Integer> positions = new ArrayList<>();
+                int pos = sequence.indexOf(motifArrayList.get(i));
+                
+                //find all instances of the motif in the sequence
+                while (pos != -1) { //when there are no more instances of the motif, .indexOf() will return -1
+                    positions.add(pos);
+                    pos = sequence.indexOf(motifArrayList.get(i), pos + 1);
+                }
+                System.out.println("\n\nMotif #" + (i + 1) + ": " + motifArrayList.get(i));
+                System.out.println("Number of Appearances: " + positions.size());
+                System.out.println("Positions: ");
+                System.out.println(positions + "\n");
+
+                int prevPos = 0;
+                //print out the sequence with each instance of the current motif highlighted
+                for( int u = 0; u < positions.size(); u++){
+                    String sub = sequence.substring(prevPos, positions.get(u));
+                    System.out.print(sub + "\033[47m" + motifArrayList.get(i) + "\033[0m"); //the funky looking expressions are to signal start highlighting and stop highlighting
+                    if(u < positions.size()-1)
+                        if(positions.get(u + 1) - positions.get(u) >= motifArrayList.get(i).length() ){
+                            prevPos = positions.get(u) + motifArrayList.get(i).length();
+                        }
+                }
             }
         }
-    }
+    } 
 }
