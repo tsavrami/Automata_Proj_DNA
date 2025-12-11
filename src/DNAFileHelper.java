@@ -1,4 +1,3 @@
-// (troy) TODO: amek this into a runnable thready class, make a driver class
 
 package src;
 
@@ -6,7 +5,7 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 
-public class DNAFileHelper extends Thread implements Runnable {
+public class DNAFileHelper extends Thread {
 
 	// Variables
 	int choice; // which sequence detected by the program do you want to check, 0 for first, 1 for second, etc.

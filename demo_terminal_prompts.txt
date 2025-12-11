@@ -1,0 +1,4 @@
+Proteins 
+E QA SLS GELS
+DNA
+T AG CCT TTTA
