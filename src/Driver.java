@@ -1,10 +1,11 @@
 package src;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Driver {
     public static void main(String[] args) {
@@ -105,18 +106,19 @@ public class Driver {
 
             System.out.println("Report: ");
             for(int i = 0; i< motifArrayList.size(); i++){
-                List<Integer> positions = new ArrayList<>();
-                int pos = sequence.indexOf(motifArrayList.get(i));
-
-                //find all instances of the motif in the sequence
-                while (pos != -1) { //when there are no more instances of the motif, .indexOf() will return -1
-                    positions.add(pos);
-                    pos = sequence.indexOf(motifArrayList.get(i), pos + 1);
+                ArrayList<Integer> positions = new ArrayList<>();
+        
+                // Quote the substring to treat it as literal text (not regex special chars)
+                Pattern pattern = Pattern.compile(Pattern.quote(motifArrayList.get(i)));
+                Matcher matcher = pattern.matcher(sequence);
+                
+                // Find all matches and store their starting positions
+                while (matcher.find()) {
+                    positions.add(matcher.start());
                 }
                 System.out.println("\n\nMotif #" + (i + 1) + ": " + motifArrayList.get(i));
                 System.out.println("Number of Appearances: " + positions.size());
                 System.out.println("Positions: " + positions);
-                // System.out.println(positions + "\n");
 
                 int prevPos = 0;
                 //print out the sequence with each instance of the current motif highlighted
@@ -128,11 +130,11 @@ public class Driver {
                             prevPos = positions.get(u) + motifArrayList.get(i).length();
                         }
                 }
-                
+                System.out.println(sequence.substring(positions.get(positions.size()-1)+ motifArrayList.get(i).length()));//print the remaining sequence
                 // Print time elapsed for measuring performance
                 System.out.println("\n[Time elapsed: " + (System.currentTimeMillis() - startTime) + " milliseconds]");
             }
             System.exit(0);
         }
-    } 
+    }
 }
