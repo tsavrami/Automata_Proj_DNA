@@ -76,7 +76,7 @@ public class Driver {
                 System.out.println("Entered motifs so far: " + motifArrayList);
 
                 // (3.3) Ask user if they want to add another motif
-                System.out.print("\n\n>>> Do you want to add another motif? (y/n): ");
+                System.out.print("\n>>> Do you want to add another motif? (y/n): ");
                 while(flag){
                     String yn = scnr.nextLine();
                     if(yn.equalsIgnoreCase("y")){
@@ -96,11 +96,14 @@ public class Driver {
             }
             System.out.println("\n\n===========================================================================================");
             
+            // Use time to measure performance
+            long startTime = System.currentTimeMillis();
+
             System.out.println("Report: ");
             for(int i = 0; i< motifArrayList.size(); i++){
                 List<Integer> positions = new ArrayList<>();
                 int pos = sequence.indexOf(motifArrayList.get(i));
-                
+
                 //find all instances of the motif in the sequence
                 while (pos != -1) { //when there are no more instances of the motif, .indexOf() will return -1
                     positions.add(pos);
@@ -108,8 +111,8 @@ public class Driver {
                 }
                 System.out.println("\n\nMotif #" + (i + 1) + ": " + motifArrayList.get(i));
                 System.out.println("Number of Appearances: " + positions.size());
-                System.out.println("Positions: ");
-                System.out.println(positions + "\n");
+                System.out.println("Positions: " + positions);
+                // System.out.println(positions + "\n");
 
                 int prevPos = 0;
                 //print out the sequence with each instance of the current motif highlighted
@@ -121,6 +124,10 @@ public class Driver {
                             prevPos = positions.get(u) + motifArrayList.get(i).length();
                         }
                 }
+                
+                // Print time elapsed for measuring performance
+                System.out.println("\n[Time elapsed: " + (System.currentTimeMillis() - startTime) + " milliseconds]");
+
             }
         }
     } 
